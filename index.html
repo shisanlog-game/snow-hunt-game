@@ -2,37 +2,37 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>スノーハント商会</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>スノーハント商会 v0.2</title>
 <style>
   :root {
     --bg: #eaf6ff;
-    --ice: #d8efff;
     --ink: #172033;
     --muted: #5c6b82;
     --blue: #2563eb;
     --green: #16a34a;
     --orange: #f59e0b;
     --red: #ef4444;
-    --card: rgba(255,255,255,.88);
-    --line: rgba(23,32,51,.12);
+    --card: rgba(255,255,255,.9);
+    --line: rgba(23,32,51,.13);
   }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     margin: 0;
     min-height: 100vh;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
     color: var(--ink);
-    background: linear-gradient(180deg, #dff3ff 0%, #f7fbff 58%, #e9f4ff 100%);
+    background: linear-gradient(180deg, #dff3ff 0%, #f7fbff 56%, #e9f4ff 100%);
     overflow-x: hidden;
+    touch-action: manipulation;
   }
   .app {
     max-width: 1180px;
     margin: 0 auto;
-    padding: 14px;
+    padding: 12px;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 340px;
-    gap: 14px;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 12px;
   }
   .top {
     grid-column: 1 / -1;
@@ -41,42 +41,22 @@
     justify-content: space-between;
     gap: 12px;
   }
-  h1 {
-    font-size: 22px;
-    margin: 0;
-    letter-spacing: 0;
-  }
-  .subtitle {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 2px;
-  }
-  .stats {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
+  h1 { margin: 0; font-size: 22px; letter-spacing: 0; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .stats { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
   .pill {
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 8px;
     padding: 8px 10px;
-    min-width: 92px;
-    box-shadow: 0 8px 24px rgba(31, 72, 109, .08);
+    min-width: 88px;
+    box-shadow: 0 8px 24px rgba(31,72,109,.08);
   }
-  .pill b {
-    display: block;
-    font-size: 18px;
-    line-height: 1.1;
-  }
-  .pill span {
-    color: var(--muted);
-    font-size: 11px;
-  }
+  .pill b { display: block; font-size: 18px; line-height: 1.1; }
+  .pill span { color: var(--muted); font-size: 11px; }
   .arena {
     position: relative;
-    min-height: 590px;
+    min-height: 600px;
     border-radius: 8px;
     overflow: hidden;
     background:
@@ -84,7 +64,7 @@
       radial-gradient(circle at 70% 28%, rgba(255,255,255,.85) 0 3px, transparent 4px),
       linear-gradient(180deg, #bfe8ff 0 34%, #f8fdff 34% 100%);
     border: 1px solid var(--line);
-    box-shadow: inset 0 -18px 60px rgba(92, 169, 216, .18), 0 16px 40px rgba(31, 72, 109, .12);
+    box-shadow: inset 0 -18px 60px rgba(92,169,216,.18), 0 16px 40px rgba(31,72,109,.12);
   }
   .mountain {
     position: absolute;
@@ -93,7 +73,6 @@
     top: 18%;
     height: 180px;
     background:
-      linear-gradient(135deg, transparent 0 32%, rgba(111, 164, 199, .5) 32% 33%, transparent 33%),
       linear-gradient(45deg, transparent 0 42%, rgba(255,255,255,.9) 42% 51%, transparent 51%),
       linear-gradient(135deg, #8ac7e9 0 50%, transparent 50%);
     clip-path: polygon(0 100%, 16% 48%, 26% 100%, 43% 25%, 61% 100%, 78% 38%, 100% 100%);
@@ -104,36 +83,61 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 64%;
+    height: 66%;
     background:
       radial-gradient(ellipse at 22% 75%, rgba(207,232,247,.9) 0 42px, transparent 43px),
       radial-gradient(ellipse at 74% 86%, rgba(207,232,247,.85) 0 58px, transparent 59px),
       linear-gradient(180deg, #fbfeff 0%, #edf8ff 100%);
   }
-  .path {
-    position: absolute;
-    left: 18%;
-    right: 18%;
-    bottom: -24px;
-    height: 210px;
-    background: rgba(198, 223, 238, .55);
-    border-radius: 50% 50% 0 0;
-    transform: perspective(320px) rotateX(58deg);
-  }
-  .bearWrap {
+  .hpBox {
     position: absolute;
     left: 50%;
-    top: 47%;
+    top: 22px;
+    width: min(420px, 88%);
+    transform: translateX(-50%);
+    background: rgba(255,255,255,.88);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 6;
+    box-shadow: 0 10px 24px rgba(31,72,109,.1);
+  }
+  .hpTop {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-weight: 800;
+    margin-bottom: 7px;
+    font-size: 14px;
+  }
+  .bar {
+    height: 16px;
+    border: 2px solid #263244;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #e5e7eb;
+  }
+  .barFill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #22c55e, #f59e0b, #ef4444);
+    transition: width .14s ease;
+  }
+  .worldItem {
+    position: absolute;
     transform: translate(-50%, -50%);
-    width: min(280px, 58vw);
+    user-select: none;
+  }
+  .bearWrap {
+    left: 58%;
+    top: 44%;
+    width: min(240px, 45vw);
     aspect-ratio: 1.2;
     cursor: pointer;
-    user-select: none;
+    z-index: 3;
     transition: transform .08s ease;
   }
-  .bearWrap.hit {
-    transform: translate(-50%, -50%) scale(.96);
-  }
+  .bearWrap.hit { transform: translate(-50%, -50%) scale(.96); }
   .bear {
     position: absolute;
     inset: 20% 4% 4%;
@@ -197,14 +201,49 @@
   }
   .claw.left { left: -2%; transform: rotate(12deg); }
   .claw.right { right: -2%; transform: rotate(-12deg); }
-  .hunter {
-    position: absolute;
-    left: 17%;
-    bottom: 15%;
-    width: 84px;
-    height: 138px;
-    filter: drop-shadow(0 12px 18px rgba(23,32,51,.18));
+  .vendor {
+    left: 83%;
+    top: 74%;
+    width: 104px;
+    height: 118px;
+    z-index: 2;
   }
+  .stall {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 70px;
+    background: #f8fafc;
+    border: 3px solid #263244;
+    border-radius: 8px;
+  }
+  .stall:before {
+    content: "売店";
+    position: absolute;
+    left: 50%;
+    top: 12px;
+    transform: translateX(-50%);
+    font-weight: 800;
+  }
+  .roof {
+    position: absolute;
+    left: -8px;
+    right: -8px;
+    top: 18px;
+    height: 34px;
+    background: repeating-linear-gradient(90deg, #ef4444 0 18px, #fff 18px 36px);
+    border: 3px solid #263244;
+    border-radius: 8px 8px 4px 4px;
+  }
+  .player {
+    width: 88px;
+    height: 144px;
+    z-index: 5;
+    filter: drop-shadow(0 12px 18px rgba(23,32,51,.18));
+    transition: filter .12s ease;
+  }
+  .player.near { filter: drop-shadow(0 0 18px rgba(245,158,11,.68)); }
   .head {
     width: 38px;
     height: 38px;
@@ -240,74 +279,20 @@
     background: linear-gradient(90deg, #1f2937 0 42%, transparent 42% 58%, #1f2937 58%);
     border-radius: 0 0 12px 12px;
   }
-  .vendor {
-    position: absolute;
-    right: 8%;
-    bottom: 13%;
-    width: 104px;
-    height: 118px;
-  }
-  .stall {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 70px;
-    background: #f8fafc;
-    border: 3px solid #263244;
-    border-radius: 8px;
-  }
-  .stall:before {
-    content: "売店";
+  .hint {
     position: absolute;
     left: 50%;
-    top: 12px;
+    bottom: 170px;
     transform: translateX(-50%);
-    font-weight: 800;
-    color: #263244;
-  }
-  .roof {
-    position: absolute;
-    left: -8px;
-    right: -8px;
-    top: 18px;
-    height: 34px;
-    background: repeating-linear-gradient(90deg, #ef4444 0 18px, #fff 18px 36px);
-    border: 3px solid #263244;
-    border-radius: 8px 8px 4px 4px;
-  }
-  .hpBox {
-    position: absolute;
-    left: 50%;
-    top: 28px;
-    width: min(420px, 88%);
-    transform: translateX(-50%);
-    background: rgba(255,255,255,.86);
+    min-width: min(420px, 88%);
+    text-align: center;
+    background: rgba(255,255,255,.9);
     border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 10px 24px rgba(31,72,109,.1);
-  }
-  .hpTop {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    padding: 9px 10px;
     font-weight: 800;
-    margin-bottom: 7px;
-    font-size: 14px;
-  }
-  .bar {
-    height: 16px;
-    border: 2px solid #263244;
-    border-radius: 999px;
-    overflow: hidden;
-    background: #e5e7eb;
-  }
-  .barFill {
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(90deg, #22c55e, #f59e0b, #ef4444);
-    transition: width .14s ease;
+    color: #334155;
+    z-index: 8;
   }
   .floating {
     position: absolute;
@@ -315,31 +300,47 @@
     color: #ef4444;
     text-shadow: 0 2px 0 #fff;
     pointer-events: none;
+    z-index: 9;
     animation: floatUp .7s ease-out forwards;
   }
-  @keyframes floatUp {
-    to { transform: translateY(-42px); opacity: 0; }
-  }
+  @keyframes floatUp { to { transform: translateY(-42px); opacity: 0; } }
   .controls {
     position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
     display: grid;
-    grid-template-columns: 1.1fr .9fr;
+    grid-template-columns: 148px 1fr;
     gap: 10px;
+    align-items: end;
+    z-index: 10;
+  }
+  .dpad {
+    display: grid;
+    grid-template-columns: 48px 48px 48px;
+    grid-template-rows: 48px 48px 48px;
+    gap: 2px;
+  }
+  .dpad button:nth-child(1) { grid-column: 2; grid-row: 1; }
+  .dpad button:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .dpad button:nth-child(3) { grid-column: 3; grid-row: 2; }
+  .dpad button:nth-child(4) { grid-column: 2; grid-row: 3; }
+  .actionGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
   button {
     appearance: none;
     border: 0;
     border-radius: 8px;
-    padding: 13px 14px;
+    padding: 13px 12px;
     font-weight: 900;
     color: white;
     background: var(--blue);
     box-shadow: 0 7px 0 #1d4ed8, 0 14px 28px rgba(37,99,235,.22);
     cursor: pointer;
-    touch-action: manipulation;
+    touch-action: none;
     font-size: 15px;
   }
   button:active {
@@ -363,11 +364,7 @@
     box-shadow: 0 7px 0 #6b7280;
     cursor: not-allowed;
   }
-  .side {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+  .side { display: flex; flex-direction: column; gap: 12px; }
   .panel {
     background: var(--card);
     border: 1px solid var(--line);
@@ -375,14 +372,8 @@
     padding: 12px;
     box-shadow: 0 16px 40px rgba(31,72,109,.1);
   }
-  .panel h2 {
-    margin: 0 0 10px;
-    font-size: 16px;
-  }
-  .upgrade {
-    display: grid;
-    gap: 8px;
-  }
+  .panel h2 { margin: 0 0 10px; font-size: 16px; }
+  .upgrade { display: grid; gap: 8px; }
   .upgradeCard {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -393,33 +384,15 @@
     padding: 10px;
     background: rgba(255,255,255,.68);
   }
-  .upgradeCard strong {
-    display: block;
-    font-size: 14px;
-  }
-  .upgradeCard small {
-    display: block;
-    color: var(--muted);
-    line-height: 1.45;
-  }
+  .upgradeCard strong { display: block; font-size: 14px; }
+  .upgradeCard small { display: block; color: var(--muted); line-height: 1.45; }
   .upgradeCard button {
     min-width: 86px;
     padding: 10px 9px;
     font-size: 13px;
     box-shadow: none;
   }
-  .log {
-    height: 118px;
-    overflow: auto;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.55;
-  }
-  .quest {
-    display: grid;
-    gap: 7px;
-    font-size: 13px;
-  }
+  .quest { display: grid; gap: 7px; font-size: 13px; }
   .questLine {
     display: flex;
     justify-content: space-between;
@@ -430,15 +403,38 @@
   .questLine:last-child { border-bottom: 0; padding-bottom: 0; }
   .good { color: var(--green); font-weight: 900; }
   .warn { color: #b45309; font-weight: 900; }
+  .log {
+    height: 116px;
+    overflow: auto;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .history {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
   @media (max-width: 860px) {
     .app { grid-template-columns: 1fr; padding: 10px; }
     .top { align-items: flex-start; flex-direction: column; }
     .stats { justify-content: flex-start; width: 100%; }
-    .pill { flex: 1; min-width: 86px; }
-    .arena { min-height: 560px; }
-    .hunter { left: 7%; transform: scale(.9); transform-origin: bottom left; }
-    .vendor { right: 4%; transform: scale(.9); transform-origin: bottom right; }
-    .controls { grid-template-columns: 1fr; }
+    .pill { flex: 1; min-width: 82px; }
+    .arena { min-height: 620px; }
+    .bearWrap { width: 210px; left: 58%; top: 40%; }
+    .vendor { left: 82%; top: 71%; transform: translate(-50%, -50%) scale(.88); }
+    .player { width: 80px; height: 130px; transform: translate(-50%, -50%) scale(.9); }
+    .controls { grid-template-columns: 148px 1fr; }
+    .actionGrid { grid-template-columns: 1fr; }
+    .hint { bottom: 168px; }
+  }
+  @media (max-width: 430px) {
+    h1 { font-size: 20px; }
+    .arena { min-height: 590px; }
+    .controls { grid-template-columns: 144px 1fr; gap: 8px; }
+    .dpad { grid-template-columns: 46px 46px 46px; grid-template-rows: 46px 46px 46px; }
+    button { font-size: 14px; padding: 11px 9px; }
+    .hint { font-size: 13px; bottom: 160px; }
   }
 </style>
 </head>
@@ -446,8 +442,8 @@
 <div class="app">
   <header class="top">
     <div>
-      <h1>スノーハント商会</h1>
-      <div class="subtitle">白熊を撃退して肉を集め、売って装備を強化するミニゲーム</div>
+      <h1>スノーハント商会 <small>v0.2</small></h1>
+      <div class="subtitle">移動して、近づいて、白熊を撃退。肉を売って装備を強化します。</div>
     </div>
     <div class="stats">
       <div class="pill"><b id="coins">0</b><span>コイン</span></div>
@@ -460,7 +456,6 @@
   <main class="arena" id="arena">
     <div class="mountain"></div>
     <div class="snowfield"></div>
-    <div class="path"></div>
 
     <div class="hpBox">
       <div class="hpTop">
@@ -470,7 +465,7 @@
       <div class="bar"><div class="barFill" id="hpFill"></div></div>
     </div>
 
-    <div class="bearWrap" id="bearWrap" title="タップで攻撃">
+    <div class="worldItem bearWrap" id="bearWrap" title="近づくと攻撃できます">
       <div class="bear">
         <div class="claw left"></div>
         <div class="claw right"></div>
@@ -482,20 +477,30 @@
       </div>
     </div>
 
-    <div class="hunter">
+    <div class="worldItem vendor" id="vendor">
+      <div class="roof"></div>
+      <div class="stall"></div>
+    </div>
+
+    <div class="worldItem player" id="player">
       <div class="head"></div>
       <div class="body"><div class="tool"></div></div>
       <div class="legs"></div>
     </div>
 
-    <div class="vendor">
-      <div class="roof"></div>
-      <div class="stall"></div>
-    </div>
+    <div class="hint" id="hint">十字キーか矢印キーで移動</div>
 
     <div class="controls">
-      <button id="attackBtn">攻撃する</button>
-      <button class="sell" id="sellBtn">肉を売る</button>
+      <div class="dpad" aria-label="移動">
+        <button data-dir="up">↑</button>
+        <button data-dir="left">←</button>
+        <button data-dir="right">→</button>
+        <button data-dir="down">↓</button>
+      </div>
+      <div class="actionGrid">
+        <button id="attackBtn">攻撃</button>
+        <button class="sell" id="sellBtn">売却</button>
+      </div>
     </div>
   </main>
 
@@ -504,24 +509,15 @@
       <h2>強化</h2>
       <div class="upgrade">
         <div class="upgradeCard">
-          <div>
-            <strong>武器強化</strong>
-            <small>攻撃力 +1。撃退スピードが上がります。</small>
-          </div>
+          <div><strong>武器強化</strong><small>攻撃力 +1。撃退スピードが上がります。</small></div>
           <button class="orange" id="weaponBtn">30</button>
         </div>
         <div class="upgradeCard">
-          <div>
-            <strong>大きなリュック</strong>
-            <small>肉の最大所持数 +5。売りに戻る回数を減らせます。</small>
-          </div>
+          <div><strong>大きなリュック</strong><small>肉の最大所持数 +5。売りに戻る回数を減らせます。</small></div>
           <button class="orange" id="bagBtn">45</button>
         </div>
         <div class="upgradeCard">
-          <div>
-            <strong>相棒ハンター</strong>
-            <small>毎秒自動で攻撃します。放置でも進みます。</small>
-          </div>
+          <div><strong>相棒ハンター</strong><small>白熊の近くにいる時、自動で追加攻撃します。</small></div>
           <button class="orange" id="autoBtn">80</button>
         </div>
       </div>
@@ -532,14 +528,22 @@
       <div class="quest">
         <div class="questLine"><span>肉の売値</span><strong id="price">5 コイン</strong></div>
         <div class="questLine"><span>自動攻撃</span><strong id="autoText">0 / 秒</strong></div>
-        <div class="questLine"><span>次の白熊</span><strong id="nextText">撃退ごとに強化</strong></div>
-        <div class="questLine"><span>目標</span><strong id="goalText" class="warn">撃退 10</strong></div>
+        <div class="questLine"><span>状態</span><strong id="statusText">移動中</strong></div>
+        <div class="questLine"><span>目標</span><strong id="goalText" class="warn">撃退 0 / 10</strong></div>
       </div>
     </section>
 
     <section class="panel">
       <h2>ログ</h2>
       <div class="log" id="log"></div>
+    </section>
+
+    <section class="panel">
+      <h2>更新履歴</h2>
+      <div class="history">
+        <div><strong>v0.2</strong> キャラ移動、近距離攻撃、売店売却を追加</div>
+        <div><strong>v0.1</strong> 初回公開</div>
+      </div>
     </section>
 
     <section class="panel">
@@ -550,7 +554,8 @@
 
 <script>
 (() => {
-  const state = {
+  const saveKey = "snow-hunt-game-v02";
+  const defaultState = {
     coins: 0,
     meat: 0,
     capacity: 10,
@@ -564,10 +569,21 @@
     bagCost: 45,
     autoCost: 80,
     autoDamage: 0,
+    playerX: 22,
+    playerY: 75,
     lastAuto: performance.now()
   };
+  const state = { ...defaultState };
+  try {
+    const saved = JSON.parse(localStorage.getItem(saveKey) || "null");
+    if (saved) Object.assign(state, saved, { lastAuto: performance.now() });
+  } catch (e) {}
 
   const el = {
+    arena: document.getElementById("arena"),
+    player: document.getElementById("player"),
+    bearWrap: document.getElementById("bearWrap"),
+    vendor: document.getElementById("vendor"),
     coins: document.getElementById("coins"),
     meat: document.getElementById("meat"),
     damage: document.getElementById("damage"),
@@ -575,7 +591,7 @@
     bearName: document.getElementById("bearName"),
     hpText: document.getElementById("hpText"),
     hpFill: document.getElementById("hpFill"),
-    bearWrap: document.getElementById("bearWrap"),
+    hint: document.getElementById("hint"),
     attackBtn: document.getElementById("attackBtn"),
     sellBtn: document.getElementById("sellBtn"),
     weaponBtn: document.getElementById("weaponBtn"),
@@ -583,67 +599,98 @@
     autoBtn: document.getElementById("autoBtn"),
     price: document.getElementById("price"),
     autoText: document.getElementById("autoText"),
+    statusText: document.getElementById("statusText"),
     goalText: document.getElementById("goalText"),
     log: document.getElementById("log"),
-    arena: document.getElementById("arena"),
     resetBtn: document.getElementById("resetBtn")
   };
 
+  const points = {
+    bear: { x: 58, y: 44 },
+    vendor: { x: 83, y: 74 }
+  };
+  const keys = {};
+  let lastFrame = performance.now();
+  let saveTimer = 0;
+
+  function distance(a, b) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+  function playerPoint() {
+    return { x: state.playerX, y: state.playerY };
+  }
+  function nearBear() {
+    return distance(playerPoint(), points.bear) < 18;
+  }
+  function nearVendor() {
+    return distance(playerPoint(), points.vendor) < 15;
+  }
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
+  function saveGame() {
+    const data = { ...state };
+    delete data.lastAuto;
+    localStorage.setItem(saveKey, JSON.stringify(data));
+  }
   function addLog(text) {
     const div = document.createElement("div");
     div.textContent = text;
     el.log.prepend(div);
     while (el.log.children.length > 18) el.log.lastChild.remove();
   }
-
-  function floatText(text, color) {
+  function floatText(text, color, x, y) {
     const f = document.createElement("div");
     f.className = "floating";
     f.textContent = text;
     f.style.color = color || "#ef4444";
-    f.style.left = (45 + Math.random() * 18) + "%";
-    f.style.top = (38 + Math.random() * 18) + "%";
+    f.style.left = (x || points.bear.x) + "%";
+    f.style.top = (y || points.bear.y) + "%";
     el.arena.appendChild(f);
     setTimeout(() => f.remove(), 720);
   }
-
   function calcBear() {
     state.level = 1 + Math.floor(state.kills / 3);
     state.maxHp = Math.round(20 * Math.pow(1.22, state.level - 1) + state.level * 5);
     state.hp = state.maxHp;
   }
-
   function attack(amount, silent) {
+    if (!nearBear() && !silent) {
+      addLog("白熊に近づくと攻撃できます。");
+      return;
+    }
     if (state.hp <= 0) return;
     state.hp = Math.max(0, state.hp - amount);
     if (!silent) {
       el.bearWrap.classList.add("hit");
       setTimeout(() => el.bearWrap.classList.remove("hit"), 90);
-      floatText("-" + amount);
+      floatText("-" + amount, "#ef4444", points.bear.x, points.bear.y);
     }
     if (state.hp <= 0) defeatBear();
     render();
   }
-
   function defeatBear() {
-    const gained = Math.min(state.capacity - state.meat, 2 + Math.floor(state.level / 2));
-    const overflow = 2 + Math.floor(state.level / 2) - gained;
+    const base = 2 + Math.floor(state.level / 2);
+    const gained = Math.min(state.capacity - state.meat, base);
+    const overflow = base - gained;
     state.meat += Math.max(0, gained);
     state.kills += 1;
-
     if (gained > 0) {
-      floatText("肉 +" + gained, "#16a34a");
+      floatText("肉 +" + gained, "#16a34a", points.bear.x, points.bear.y);
       addLog("白熊 Lv." + state.level + "を撃退。肉 +" + gained);
     }
-    if (overflow > 0) {
-      addLog("リュックが満杯です。肉を売るか容量を強化しましょう。");
-    }
-
+    if (overflow > 0) addLog("リュックが満杯です。売店で肉を売りましょう。");
     if (state.kills === 10) addLog("目標達成。ここからは高レベルの白熊で稼げます。");
     calcBear();
+    saveGame();
   }
-
   function sell() {
+    if (!nearVendor()) {
+      addLog("売店に近づくと肉を売れます。");
+      return;
+    }
     if (state.meat <= 0) {
       addLog("売る肉がありません。まずは集めましょう。");
       return;
@@ -651,11 +698,11 @@
     const earned = state.meat * state.meatPrice;
     state.coins += earned;
     addLog("肉を売却。" + earned + "コイン獲得。");
-    floatText("+" + earned + "C", "#f59e0b");
+    floatText("+" + earned + "C", "#f59e0b", points.vendor.x, points.vendor.y);
     state.meat = 0;
+    saveGame();
     render();
   }
-
   function buy(type) {
     if (type === "weapon" && state.coins >= state.weaponCost) {
       state.coins -= state.weaponCost;
@@ -673,12 +720,17 @@
       state.coins -= state.autoCost;
       state.autoDamage += 1;
       state.autoCost = Math.round(state.autoCost * 1.75);
-      addLog("相棒ハンターを雇いました。自動攻撃が増えます。");
+      addLog("相棒ハンターを雇いました。白熊の近くで自動攻撃します。");
     }
+    saveGame();
     render();
   }
-
   function render() {
+    el.player.style.left = state.playerX + "%";
+    el.player.style.top = state.playerY + "%";
+    const canAttack = nearBear();
+    const canSell = nearVendor();
+    el.player.classList.toggle("near", canAttack || canSell);
     el.coins.textContent = state.coins;
     el.meat.textContent = state.meat + " / " + state.capacity;
     el.damage.textContent = state.damage;
@@ -694,43 +746,87 @@
     el.weaponBtn.disabled = state.coins < state.weaponCost;
     el.bagBtn.disabled = state.coins < state.bagCost;
     el.autoBtn.disabled = state.coins < state.autoCost;
-    el.sellBtn.disabled = state.meat <= 0;
+    el.attackBtn.disabled = !canAttack;
+    el.sellBtn.disabled = !canSell || state.meat <= 0;
+    if (canAttack) {
+      el.hint.textContent = "白熊に接近中：攻撃できます";
+      el.statusText.textContent = "攻撃可能";
+    } else if (canSell) {
+      el.hint.textContent = "売店に接近中：肉を売れます";
+      el.statusText.textContent = "売却可能";
+    } else {
+      el.hint.textContent = "十字キーか矢印キーで移動";
+      el.statusText.textContent = "移動中";
+    }
     el.goalText.textContent = state.kills >= 10 ? "達成済み" : "撃退 " + state.kills + " / 10";
     el.goalText.className = state.kills >= 10 ? "good" : "warn";
   }
-
-  function loop(now) {
-    const dt = (now - state.lastAuto) / 1000;
-    if (state.autoDamage > 0 && dt >= 0.25) {
-      const amount = Math.max(1, Math.floor(state.autoDamage * dt));
-      attack(amount, true);
-      state.lastAuto = now;
-    }
-    requestAnimationFrame(loop);
-  }
-
   function reset() {
-    Object.assign(state, {
-      coins: 0,
-      meat: 0,
-      capacity: 10,
-      damage: 1,
-      kills: 0,
-      level: 1,
-      hp: 20,
-      maxHp: 20,
-      meatPrice: 5,
-      weaponCost: 30,
-      bagCost: 45,
-      autoCost: 80,
-      autoDamage: 0,
-      lastAuto: performance.now()
-    });
+    Object.assign(state, { ...defaultState, lastAuto: performance.now() });
+    localStorage.removeItem(saveKey);
     el.log.innerHTML = "";
     addLog("新しい商売を開始しました。");
     render();
   }
+  function setDir(dir, on) {
+    if (dir === "up") keys.ArrowUp = on;
+    if (dir === "down") keys.ArrowDown = on;
+    if (dir === "left") keys.ArrowLeft = on;
+    if (dir === "right") keys.ArrowRight = on;
+  }
+  function frame(now) {
+    const dt = Math.min(0.04, (now - lastFrame) / 1000);
+    lastFrame = now;
+    let dx = 0;
+    let dy = 0;
+    if (keys.ArrowUp || keys.w) dy -= 1;
+    if (keys.ArrowDown || keys.s) dy += 1;
+    if (keys.ArrowLeft || keys.a) dx -= 1;
+    if (keys.ArrowRight || keys.d) dx += 1;
+    if (dx || dy) {
+      const len = Math.sqrt(dx * dx + dy * dy);
+      const speed = 32;
+      state.playerX = clamp(state.playerX + (dx / len) * speed * dt, 8, 92);
+      state.playerY = clamp(state.playerY + (dy / len) * speed * dt, 35, 88);
+      saveTimer += dt;
+      if (saveTimer > 0.5) {
+        saveTimer = 0;
+        saveGame();
+      }
+    }
+    const autoDt = (now - state.lastAuto) / 1000;
+    if (state.autoDamage > 0 && nearBear() && autoDt >= 0.4) {
+      const amount = Math.max(1, Math.floor(state.autoDamage * autoDt));
+      attack(amount, true);
+      state.lastAuto = now;
+    }
+    render();
+    requestAnimationFrame(frame);
+  }
 
+  document.addEventListener("keydown", (e) => {
+    const k = e.key.toLowerCase();
+    if (["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(k)) {
+      e.preventDefault();
+      keys[e.key.startsWith("Arrow") ? e.key : k] = true;
+    }
+    if (k === " " || k === "enter") attack(state.damage);
+  });
+  document.addEventListener("keyup", (e) => {
+    const k = e.key.toLowerCase();
+    keys[e.key.startsWith("Arrow") ? e.key : k] = false;
+  });
+  document.querySelectorAll("[data-dir]").forEach((btn) => {
+    const dir = btn.dataset.dir;
+    btn.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      btn.setPointerCapture(e.pointerId);
+      setDir(dir, true);
+    });
+    btn.addEventListener("pointerup", () => setDir(dir, false));
+    btn.addEventListener("pointercancel", () => setDir(dir, false));
+    btn.addEventListener("pointerleave", () => setDir(dir, false));
+  });
   el.attackBtn.addEventListener("click", () => attack(state.damage));
   el.bearWrap.addEventListener("click", () => attack(state.damage));
   el.sellBtn.addEventListener("click", sell);
@@ -739,9 +835,9 @@
   el.autoBtn.addEventListener("click", () => buy("auto"));
   el.resetBtn.addEventListener("click", reset);
 
-  addLog("白熊をタップして肉を集めましょう。");
+  addLog("v0.2公開。キャラを動かして遊べるようになりました。");
   render();
-  requestAnimationFrame(loop);
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>
