@@ -3,17 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>スノーハント商会 v0.2</title>
+<title>スノーハント商会 v0.3</title>
 <style>
   :root {
-    --bg: #eaf6ff;
     --ink: #172033;
     --muted: #5c6b82;
     --blue: #2563eb;
     --green: #16a34a;
     --orange: #f59e0b;
     --red: #ef4444;
-    --card: rgba(255,255,255,.9);
+    --card: rgba(255,255,255,.92);
     --line: rgba(23,32,51,.13);
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -22,9 +21,8 @@
     min-height: 100vh;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
     color: var(--ink);
-    background: linear-gradient(180deg, #dff3ff 0%, #f7fbff 56%, #e9f4ff 100%);
+    background: linear-gradient(180deg, #dff3ff 0%, #f7fbff 58%, #e9f4ff 100%);
     overflow-x: hidden;
-    touch-action: manipulation;
   }
   .app {
     max-width: 1180px;
@@ -42,6 +40,7 @@
     gap: 12px;
   }
   h1 { margin: 0; font-size: 22px; letter-spacing: 0; }
+  h1 small { color: var(--muted); font-size: 13px; }
   .subtitle { color: var(--muted); font-size: 13px; margin-top: 2px; }
   .stats { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
   .pill {
@@ -49,14 +48,14 @@
     border: 1px solid var(--line);
     border-radius: 8px;
     padding: 8px 10px;
-    min-width: 88px;
+    min-width: 86px;
     box-shadow: 0 8px 24px rgba(31,72,109,.08);
   }
   .pill b { display: block; font-size: 18px; line-height: 1.1; }
   .pill span { color: var(--muted); font-size: 11px; }
   .arena {
     position: relative;
-    min-height: 600px;
+    min-height: 610px;
     border-radius: 8px;
     overflow: hidden;
     background:
@@ -65,6 +64,7 @@
       linear-gradient(180deg, #bfe8ff 0 34%, #f8fdff 34% 100%);
     border: 1px solid var(--line);
     box-shadow: inset 0 -18px 60px rgba(92,169,216,.18), 0 16px 40px rgba(31,72,109,.12);
+    touch-action: manipulation;
   }
   .mountain {
     position: absolute;
@@ -95,11 +95,11 @@
     top: 22px;
     width: min(420px, 88%);
     transform: translateX(-50%);
-    background: rgba(255,255,255,.88);
+    background: rgba(255,255,255,.9);
     border: 1px solid var(--line);
     border-radius: 8px;
     padding: 10px;
-    z-index: 6;
+    z-index: 9;
     box-shadow: 0 10px 24px rgba(31,72,109,.1);
   }
   .hpTop {
@@ -121,7 +121,7 @@
     height: 100%;
     width: 100%;
     background: linear-gradient(90deg, #22c55e, #f59e0b, #ef4444);
-    transition: width .14s ease;
+    transition: width .16s ease;
   }
   .worldItem {
     position: absolute;
@@ -130,11 +130,11 @@
   }
   .bearWrap {
     left: 58%;
-    top: 44%;
-    width: min(240px, 45vw);
+    top: 43%;
+    width: min(245px, 45vw);
     aspect-ratio: 1.2;
     cursor: pointer;
-    z-index: 3;
+    z-index: 4;
     transition: transform .08s ease;
   }
   .bearWrap.hit { transform: translate(-50%, -50%) scale(.96); }
@@ -207,6 +207,7 @@
     width: 104px;
     height: 118px;
     z-index: 2;
+    cursor: pointer;
   }
   .stall {
     position: absolute;
@@ -236,17 +237,26 @@
     border: 3px solid #263244;
     border-radius: 8px 8px 4px 4px;
   }
-  .player {
-    width: 88px;
-    height: 144px;
-    z-index: 5;
+  .player, .buddy {
+    width: 82px;
+    height: 132px;
+    z-index: 6;
     filter: drop-shadow(0 12px 18px rgba(23,32,51,.18));
     transition: filter .12s ease;
   }
-  .player.near { filter: drop-shadow(0 0 18px rgba(245,158,11,.68)); }
+  .player.busy { filter: drop-shadow(0 0 18px rgba(245,158,11,.72)); }
+  .buddy {
+    width: 54px;
+    height: 88px;
+    z-index: 5;
+  }
+  .buddy .head { width: 25px; height: 25px; border-width: 2px; }
+  .buddy .body { width: 40px; height: 45px; border-width: 2px; background: #16a34a; }
+  .buddy .tool { right: -22px; top: 10px; width: 34px; height: 7px; border-width: 2px; }
+  .buddy .legs { width: 36px; height: 20px; }
   .head {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     margin: 0 auto;
     background: #f5c7a9;
     border: 3px solid #263244;
@@ -254,8 +264,8 @@
   }
   .body {
     position: relative;
-    width: 62px;
-    height: 72px;
+    width: 58px;
+    height: 68px;
     margin: -2px auto 0;
     background: #2563eb;
     border: 3px solid #263244;
@@ -273,8 +283,8 @@
     transform: rotate(-18deg);
   }
   .legs {
-    width: 54px;
-    height: 32px;
+    width: 52px;
+    height: 30px;
     margin: 0 auto;
     background: linear-gradient(90deg, #1f2937 0 42%, transparent 42% 58%, #1f2937 58%);
     border-radius: 0 0 12px 12px;
@@ -282,65 +292,39 @@
   .hint {
     position: absolute;
     left: 50%;
-    bottom: 170px;
+    bottom: 104px;
     transform: translateX(-50%);
-    min-width: min(420px, 88%);
+    min-width: min(450px, 88%);
     text-align: center;
-    background: rgba(255,255,255,.9);
+    background: rgba(255,255,255,.92);
     border: 1px solid var(--line);
     border-radius: 8px;
     padding: 9px 10px;
     font-weight: 800;
     color: #334155;
-    z-index: 8;
+    z-index: 10;
   }
-  .floating {
-    position: absolute;
-    font-weight: 900;
-    color: #ef4444;
-    text-shadow: 0 2px 0 #fff;
-    pointer-events: none;
-    z-index: 9;
-    animation: floatUp .7s ease-out forwards;
-  }
-  @keyframes floatUp { to { transform: translateY(-42px); opacity: 0; } }
   .controls {
     position: absolute;
     left: 12px;
     right: 12px;
     bottom: 12px;
     display: grid;
-    grid-template-columns: 148px 1fr;
-    gap: 10px;
-    align-items: end;
-    z-index: 10;
-  }
-  .dpad {
-    display: grid;
-    grid-template-columns: 48px 48px 48px;
-    grid-template-rows: 48px 48px 48px;
-    gap: 2px;
-  }
-  .dpad button:nth-child(1) { grid-column: 2; grid-row: 1; }
-  .dpad button:nth-child(2) { grid-column: 1; grid-row: 2; }
-  .dpad button:nth-child(3) { grid-column: 3; grid-row: 2; }
-  .dpad button:nth-child(4) { grid-column: 2; grid-row: 3; }
-  .actionGrid {
-    display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
+    z-index: 10;
   }
   button {
     appearance: none;
     border: 0;
     border-radius: 8px;
-    padding: 13px 12px;
+    padding: 14px 12px;
     font-weight: 900;
     color: white;
     background: var(--blue);
     box-shadow: 0 7px 0 #1d4ed8, 0 14px 28px rgba(37,99,235,.22);
     cursor: pointer;
-    touch-action: none;
+    touch-action: manipulation;
     font-size: 15px;
   }
   button:active {
@@ -382,12 +366,12 @@
     border: 1px solid var(--line);
     border-radius: 8px;
     padding: 10px;
-    background: rgba(255,255,255,.68);
+    background: rgba(255,255,255,.7);
   }
   .upgradeCard strong { display: block; font-size: 14px; }
   .upgradeCard small { display: block; color: var(--muted); line-height: 1.45; }
   .upgradeCard button {
-    min-width: 86px;
+    min-width: 88px;
     padding: 10px 9px;
     font-size: 13px;
     box-shadow: none;
@@ -415,26 +399,32 @@
     color: var(--muted);
     line-height: 1.6;
   }
+  .floating {
+    position: absolute;
+    font-weight: 900;
+    color: #ef4444;
+    text-shadow: 0 2px 0 #fff;
+    pointer-events: none;
+    z-index: 11;
+    animation: floatUp .75s ease-out forwards;
+  }
+  @keyframes floatUp { to { transform: translateY(-46px); opacity: 0; } }
   @media (max-width: 860px) {
     .app { grid-template-columns: 1fr; padding: 10px; }
     .top { align-items: flex-start; flex-direction: column; }
     .stats { justify-content: flex-start; width: 100%; }
     .pill { flex: 1; min-width: 82px; }
-    .arena { min-height: 620px; }
+    .arena { min-height: 610px; }
     .bearWrap { width: 210px; left: 58%; top: 40%; }
-    .vendor { left: 82%; top: 71%; transform: translate(-50%, -50%) scale(.88); }
-    .player { width: 80px; height: 130px; transform: translate(-50%, -50%) scale(.9); }
-    .controls { grid-template-columns: 148px 1fr; }
-    .actionGrid { grid-template-columns: 1fr; }
-    .hint { bottom: 168px; }
+    .vendor { left: 82%; top: 71%; transform: translate(-50%, -50%) scale(.9); }
+    .player { transform: translate(-50%, -50%) scale(.92); }
+    .buddy { transform: translate(-50%, -50%) scale(.82); }
   }
   @media (max-width: 430px) {
     h1 { font-size: 20px; }
     .arena { min-height: 590px; }
-    .controls { grid-template-columns: 144px 1fr; gap: 8px; }
-    .dpad { grid-template-columns: 46px 46px 46px; grid-template-rows: 46px 46px 46px; }
-    button { font-size: 14px; padding: 11px 9px; }
-    .hint { font-size: 13px; bottom: 160px; }
+    .hint { bottom: 96px; font-size: 13px; }
+    button { font-size: 14px; padding: 12px 9px; }
   }
 </style>
 </head>
@@ -442,13 +432,13 @@
 <div class="app">
   <header class="top">
     <div>
-      <h1>スノーハント商会 <small>v0.2</small></h1>
-      <div class="subtitle">移動して、近づいて、白熊を撃退。肉を売って装備を強化します。</div>
+      <h1>スノーハント商会 <small>v0.3</small></h1>
+      <div class="subtitle">ボタン連打を減らして、自動移動と自動狩りでテンポよく育てる版です。</div>
     </div>
     <div class="stats">
       <div class="pill"><b id="coins">0</b><span>コイン</span></div>
-      <div class="pill"><b id="meat">0 / 10</b><span>肉</span></div>
-      <div class="pill"><b id="damage">1</b><span>攻撃力</span></div>
+      <div class="pill"><b id="meat">0 / 15</b><span>肉</span></div>
+      <div class="pill"><b id="damage">4</b><span>攻撃力</span></div>
       <div class="pill"><b id="kills">0</b><span>撃退数</span></div>
     </div>
   </header>
@@ -460,12 +450,12 @@
     <div class="hpBox">
       <div class="hpTop">
         <span id="bearName">白熊 Lv.1</span>
-        <span id="hpText">20 / 20</span>
+        <span id="hpText">28 / 28</span>
       </div>
       <div class="bar"><div class="barFill" id="hpFill"></div></div>
     </div>
 
-    <div class="worldItem bearWrap" id="bearWrap" title="近づくと攻撃できます">
+    <div class="worldItem bearWrap" id="bearWrap" title="狩りに行く">
       <div class="bear">
         <div class="claw left"></div>
         <div class="claw right"></div>
@@ -477,7 +467,7 @@
       </div>
     </div>
 
-    <div class="worldItem vendor" id="vendor">
+    <div class="worldItem vendor" id="vendor" title="売りに行く">
       <div class="roof"></div>
       <div class="stall"></div>
     </div>
@@ -487,20 +477,13 @@
       <div class="body"><div class="tool"></div></div>
       <div class="legs"></div>
     </div>
+    <div id="buddies"></div>
 
-    <div class="hint" id="hint">十字キーか矢印キーで移動</div>
+    <div class="hint" id="hint">「狩りに行く」を押すと自動で移動して攻撃します</div>
 
     <div class="controls">
-      <div class="dpad" aria-label="移動">
-        <button data-dir="up">↑</button>
-        <button data-dir="left">←</button>
-        <button data-dir="right">→</button>
-        <button data-dir="down">↓</button>
-      </div>
-      <div class="actionGrid">
-        <button id="attackBtn">攻撃</button>
-        <button class="sell" id="sellBtn">売却</button>
-      </div>
+      <button id="huntBtn">狩りに行く</button>
+      <button class="sell" id="sellBtn">売りに行く</button>
     </div>
   </main>
 
@@ -509,16 +492,16 @@
       <h2>強化</h2>
       <div class="upgrade">
         <div class="upgradeCard">
-          <div><strong>武器強化</strong><small>攻撃力 +1。撃退スピードが上がります。</small></div>
-          <button class="orange" id="weaponBtn">30</button>
+          <div><strong>武器強化</strong><small>攻撃力 +4。1回ごとの伸びを大きくしました。</small></div>
+          <button class="orange" id="weaponBtn">40</button>
         </div>
         <div class="upgradeCard">
-          <div><strong>大きなリュック</strong><small>肉の最大所持数 +5。売りに戻る回数を減らせます。</small></div>
-          <button class="orange" id="bagBtn">45</button>
+          <div><strong>大きなリュック</strong><small>肉の最大所持数 +10。売り戻りを減らします。</small></div>
+          <button class="orange" id="bagBtn">60</button>
         </div>
         <div class="upgradeCard">
-          <div><strong>相棒ハンター</strong><small>白熊の近くにいる時、自動で追加攻撃します。</small></div>
-          <button class="orange" id="autoBtn">80</button>
+          <div><strong>相棒ハンター</strong><small>どこにいても毎秒攻撃。見た目にも追加されます。</small></div>
+          <button class="orange" id="buddyBtn">90</button>
         </div>
       </div>
     </section>
@@ -526,9 +509,9 @@
     <section class="panel">
       <h2>現在の商売</h2>
       <div class="quest">
-        <div class="questLine"><span>肉の売値</span><strong id="price">5 コイン</strong></div>
-        <div class="questLine"><span>自動攻撃</span><strong id="autoText">0 / 秒</strong></div>
-        <div class="questLine"><span>状態</span><strong id="statusText">移動中</strong></div>
+        <div class="questLine"><span>肉の売値</span><strong id="price">6 コイン</strong></div>
+        <div class="questLine"><span>相棒</span><strong id="buddyText">0人</strong></div>
+        <div class="questLine"><span>状態</span><strong id="statusText">待機中</strong></div>
         <div class="questLine"><span>目標</span><strong id="goalText" class="warn">撃退 0 / 10</strong></div>
       </div>
     </section>
@@ -541,6 +524,7 @@
     <section class="panel">
       <h2>更新履歴</h2>
       <div class="history">
+        <div><strong>v0.3</strong> 自動移動、自動狩り、相棒の常時攻撃、バランス調整</div>
         <div><strong>v0.2</strong> キャラ移動、近距離攻撃、売店売却を追加</div>
         <div><strong>v0.1</strong> 初回公開</div>
       </div>
@@ -554,29 +538,37 @@
 
 <script>
 (() => {
-  const saveKey = "snow-hunt-game-v02";
+  const saveKey = "snow-hunt-game-v03";
   const defaultState = {
     coins: 0,
     meat: 0,
-    capacity: 10,
-    damage: 1,
+    capacity: 15,
+    damage: 4,
     kills: 0,
     level: 1,
-    hp: 20,
-    maxHp: 20,
-    meatPrice: 5,
-    weaponCost: 30,
-    bagCost: 45,
-    autoCost: 80,
-    autoDamage: 0,
-    playerX: 22,
-    playerY: 75,
-    lastAuto: performance.now()
+    hp: 28,
+    maxHp: 28,
+    meatPrice: 6,
+    weaponCost: 40,
+    bagCost: 60,
+    buddyCost: 90,
+    buddies: 0,
+    playerX: 20,
+    playerY: 74,
+    targetX: 20,
+    targetY: 74,
+    mode: "idle",
+    nextHit: 0,
+    nextBuddyHit: 0
   };
   const state = { ...defaultState };
+  let loadedSave = false;
   try {
     const saved = JSON.parse(localStorage.getItem(saveKey) || "null");
-    if (saved) Object.assign(state, saved, { lastAuto: performance.now() });
+    if (saved) {
+      Object.assign(state, saved);
+      loadedSave = true;
+    }
   } catch (e) {}
 
   const el = {
@@ -584,6 +576,8 @@
     player: document.getElementById("player"),
     bearWrap: document.getElementById("bearWrap"),
     vendor: document.getElementById("vendor"),
+    buddies: document.getElementById("buddies"),
+    hint: document.getElementById("hint"),
     coins: document.getElementById("coins"),
     meat: document.getElementById("meat"),
     damage: document.getElementById("damage"),
@@ -591,14 +585,13 @@
     bearName: document.getElementById("bearName"),
     hpText: document.getElementById("hpText"),
     hpFill: document.getElementById("hpFill"),
-    hint: document.getElementById("hint"),
-    attackBtn: document.getElementById("attackBtn"),
+    huntBtn: document.getElementById("huntBtn"),
     sellBtn: document.getElementById("sellBtn"),
     weaponBtn: document.getElementById("weaponBtn"),
     bagBtn: document.getElementById("bagBtn"),
-    autoBtn: document.getElementById("autoBtn"),
+    buddyBtn: document.getElementById("buddyBtn"),
     price: document.getElementById("price"),
-    autoText: document.getElementById("autoText"),
+    buddyText: document.getElementById("buddyText"),
     statusText: document.getElementById("statusText"),
     goalText: document.getElementById("goalText"),
     log: document.getElementById("log"),
@@ -606,13 +599,17 @@
   };
 
   const points = {
-    bear: { x: 58, y: 44 },
-    vendor: { x: 83, y: 74 }
+    bear: { x: 58, y: 43 },
+    bearAttack: { x: 44, y: 58 },
+    vendor: { x: 83, y: 74 },
+    sellSpot: { x: 70, y: 76 }
   };
-  const keys = {};
   let lastFrame = performance.now();
   let saveTimer = 0;
 
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
   function distance(a, b) {
     const dx = a.x - b.x;
     const dy = a.y - b.y;
@@ -621,19 +618,8 @@
   function playerPoint() {
     return { x: state.playerX, y: state.playerY };
   }
-  function nearBear() {
-    return distance(playerPoint(), points.bear) < 18;
-  }
-  function nearVendor() {
-    return distance(playerPoint(), points.vendor) < 15;
-  }
-  function clamp(v, min, max) {
-    return Math.max(min, Math.min(max, v));
-  }
   function saveGame() {
-    const data = { ...state };
-    delete data.lastAuto;
-    localStorage.setItem(saveKey, JSON.stringify(data));
+    localStorage.setItem(saveKey, JSON.stringify(state));
   }
   function addLog(text) {
     const div = document.createElement("div");
@@ -649,50 +635,54 @@
     f.style.left = (x || points.bear.x) + "%";
     f.style.top = (y || points.bear.y) + "%";
     el.arena.appendChild(f);
-    setTimeout(() => f.remove(), 720);
+    setTimeout(() => f.remove(), 760);
   }
-  function calcBear() {
-    state.level = 1 + Math.floor(state.kills / 3);
-    state.maxHp = Math.round(20 * Math.pow(1.22, state.level - 1) + state.level * 5);
-    state.hp = state.maxHp;
-  }
-  function attack(amount, silent) {
-    if (!nearBear() && !silent) {
-      addLog("白熊に近づくと攻撃できます。");
-      return;
-    }
-    if (state.hp <= 0) return;
-    state.hp = Math.max(0, state.hp - amount);
-    if (!silent) {
-      el.bearWrap.classList.add("hit");
-      setTimeout(() => el.bearWrap.classList.remove("hit"), 90);
-      floatText("-" + amount, "#ef4444", points.bear.x, points.bear.y);
-    }
-    if (state.hp <= 0) defeatBear();
+  function setTarget(point, mode) {
+    state.targetX = point.x;
+    state.targetY = point.y;
+    state.mode = mode;
+    saveGame();
     render();
   }
+  function calcBear() {
+    state.level = 1 + Math.floor(state.kills / 5);
+    state.maxHp = Math.round(20 + state.level * 8 + state.kills * 2.2);
+    state.hp = state.maxHp;
+  }
+  function dealDamage(amount, source) {
+    if (state.hp <= 0) return;
+    state.hp = Math.max(0, state.hp - amount);
+    el.bearWrap.classList.add("hit");
+    setTimeout(() => el.bearWrap.classList.remove("hit"), 90);
+    floatText("-" + amount, source === "buddy" ? "#16a34a" : "#ef4444", points.bear.x, points.bear.y);
+    if (state.hp <= 0) defeatBear();
+  }
   function defeatBear() {
-    const base = 2 + Math.floor(state.level / 2);
+    const base = 5 + state.level;
     const gained = Math.min(state.capacity - state.meat, base);
     const overflow = base - gained;
     state.meat += Math.max(0, gained);
     state.kills += 1;
     if (gained > 0) {
-      floatText("肉 +" + gained, "#16a34a", points.bear.x, points.bear.y);
       addLog("白熊 Lv." + state.level + "を撃退。肉 +" + gained);
+      floatText("肉 +" + gained, "#16a34a", points.bear.x, points.bear.y);
     }
-    if (overflow > 0) addLog("リュックが満杯です。売店で肉を売りましょう。");
-    if (state.kills === 10) addLog("目標達成。ここからは高レベルの白熊で稼げます。");
+    if (overflow > 0) {
+      addLog("リュックが満杯です。売りに行くとコイン化できます。");
+      state.mode = "sell";
+      state.targetX = points.sellSpot.x;
+      state.targetY = points.sellSpot.y;
+    }
+    if (state.kills === 10) addLog("目標達成。いい感じに商売が回り始めました。");
     calcBear();
     saveGame();
   }
-  function sell() {
-    if (!nearVendor()) {
-      addLog("売店に近づくと肉を売れます。");
-      return;
-    }
+  function sellMeat() {
     if (state.meat <= 0) {
-      addLog("売る肉がありません。まずは集めましょう。");
+      addLog("売る肉がありません。狩りに行きましょう。");
+      state.mode = "hunt";
+      state.targetX = points.bearAttack.x;
+      state.targetY = points.bearAttack.y;
       return;
     }
     const earned = state.meat * state.meatPrice;
@@ -700,37 +690,49 @@
     addLog("肉を売却。" + earned + "コイン獲得。");
     floatText("+" + earned + "C", "#f59e0b", points.vendor.x, points.vendor.y);
     state.meat = 0;
+    state.mode = "idle";
     saveGame();
-    render();
   }
   function buy(type) {
     if (type === "weapon" && state.coins >= state.weaponCost) {
       state.coins -= state.weaponCost;
-      state.damage += 1;
+      state.damage += 4;
       state.weaponCost = Math.round(state.weaponCost * 1.55);
-      addLog("武器を強化。攻撃力が上がりました。");
+      addLog("武器を強化。攻撃力 +" + 4 + "。かなり速くなりました。");
     }
     if (type === "bag" && state.coins >= state.bagCost) {
       state.coins -= state.bagCost;
-      state.capacity += 5;
-      state.bagCost = Math.round(state.bagCost * 1.6);
-      addLog("リュックを強化。もっと肉を持てます。");
+      state.capacity += 10;
+      state.bagCost = Math.round(state.bagCost * 1.55);
+      addLog("リュックを強化。容量 +" + 10 + "。長く狩れます。");
     }
-    if (type === "auto" && state.coins >= state.autoCost) {
-      state.coins -= state.autoCost;
-      state.autoDamage += 1;
-      state.autoCost = Math.round(state.autoCost * 1.75);
-      addLog("相棒ハンターを雇いました。白熊の近くで自動攻撃します。");
+    if (type === "buddy" && state.coins >= state.buddyCost) {
+      state.coins -= state.buddyCost;
+      state.buddies += 1;
+      state.buddyCost = Math.round(state.buddyCost * 1.65);
+      addLog("相棒ハンターが加入。どこにいても毎秒攻撃します。");
     }
     saveGame();
     render();
   }
+  function renderBuddies() {
+    el.buddies.innerHTML = "";
+    const visible = Math.min(state.buddies, 6);
+    for (let i = 0; i < visible; i++) {
+      const b = document.createElement("div");
+      b.className = "worldItem buddy";
+      const angle = (i / Math.max(1, visible)) * Math.PI * 2;
+      const anchor = state.mode === "hunt" ? points.bear : { x: state.playerX, y: state.playerY };
+      b.style.left = (anchor.x + Math.cos(angle) * 11) + "%";
+      b.style.top = (anchor.y + Math.sin(angle) * 8 + 12) + "%";
+      b.innerHTML = '<div class="head"></div><div class="body"><div class="tool"></div></div><div class="legs"></div>';
+      el.buddies.appendChild(b);
+    }
+  }
   function render() {
     el.player.style.left = state.playerX + "%";
     el.player.style.top = state.playerY + "%";
-    const canAttack = nearBear();
-    const canSell = nearVendor();
-    el.player.classList.toggle("near", canAttack || canSell);
+    el.player.classList.toggle("busy", state.mode !== "idle");
     el.coins.textContent = state.coins;
     el.meat.textContent = state.meat + " / " + state.capacity;
     el.damage.textContent = state.damage;
@@ -739,103 +741,91 @@
     el.hpText.textContent = state.hp + " / " + state.maxHp;
     el.hpFill.style.width = Math.max(0, state.hp / state.maxHp * 100) + "%";
     el.price.textContent = state.meatPrice + " コイン";
-    el.autoText.textContent = state.autoDamage + " / 秒";
+    el.buddyText.textContent = state.buddies + "人 / 毎秒" + (state.buddies * 3) + "ダメージ";
     el.weaponBtn.textContent = state.weaponCost;
     el.bagBtn.textContent = state.bagCost;
-    el.autoBtn.textContent = state.autoCost;
+    el.buddyBtn.textContent = state.buddyCost;
     el.weaponBtn.disabled = state.coins < state.weaponCost;
     el.bagBtn.disabled = state.coins < state.bagCost;
-    el.autoBtn.disabled = state.coins < state.autoCost;
-    el.attackBtn.disabled = !canAttack;
-    el.sellBtn.disabled = !canSell || state.meat <= 0;
-    if (canAttack) {
-      el.hint.textContent = "白熊に接近中：攻撃できます";
-      el.statusText.textContent = "攻撃可能";
-    } else if (canSell) {
-      el.hint.textContent = "売店に接近中：肉を売れます";
-      el.statusText.textContent = "売却可能";
+    el.buddyBtn.disabled = state.coins < state.buddyCost;
+    el.sellBtn.disabled = state.meat <= 0 && state.mode !== "sell";
+    if (state.mode === "hunt") {
+      el.hint.textContent = "狩り中：近づいたら自動で攻撃します";
+      el.statusText.textContent = "狩り中";
+    } else if (state.mode === "sell") {
+      el.hint.textContent = "売店へ移動中：到着したら自動で売却します";
+      el.statusText.textContent = "売却中";
     } else {
-      el.hint.textContent = "十字キーか矢印キーで移動";
-      el.statusText.textContent = "移動中";
+      el.hint.textContent = "狩りに行く / 売りに行く を押すだけで進みます";
+      el.statusText.textContent = "待機中";
     }
     el.goalText.textContent = state.kills >= 10 ? "達成済み" : "撃退 " + state.kills + " / 10";
     el.goalText.className = state.kills >= 10 ? "good" : "warn";
+    renderBuddies();
   }
   function reset() {
-    Object.assign(state, { ...defaultState, lastAuto: performance.now() });
+    Object.assign(state, { ...defaultState });
     localStorage.removeItem(saveKey);
     el.log.innerHTML = "";
     addLog("新しい商売を開始しました。");
     render();
   }
-  function setDir(dir, on) {
-    if (dir === "up") keys.ArrowUp = on;
-    if (dir === "down") keys.ArrowDown = on;
-    if (dir === "left") keys.ArrowLeft = on;
-    if (dir === "right") keys.ArrowRight = on;
-  }
   function frame(now) {
     const dt = Math.min(0.04, (now - lastFrame) / 1000);
     lastFrame = now;
-    let dx = 0;
-    let dy = 0;
-    if (keys.ArrowUp || keys.w) dy -= 1;
-    if (keys.ArrowDown || keys.s) dy += 1;
-    if (keys.ArrowLeft || keys.a) dx -= 1;
-    if (keys.ArrowRight || keys.d) dx += 1;
-    if (dx || dy) {
-      const len = Math.sqrt(dx * dx + dy * dy);
-      const speed = 32;
-      state.playerX = clamp(state.playerX + (dx / len) * speed * dt, 8, 92);
-      state.playerY = clamp(state.playerY + (dy / len) * speed * dt, 35, 88);
+    const target = { x: state.targetX, y: state.targetY };
+    const p = playerPoint();
+    const dist = distance(p, target);
+    if (dist > 0.7) {
+      const speed = 36;
+      state.playerX = clamp(state.playerX + ((target.x - p.x) / dist) * speed * dt, 8, 92);
+      state.playerY = clamp(state.playerY + ((target.y - p.y) / dist) * speed * dt, 35, 88);
       saveTimer += dt;
-      if (saveTimer > 0.5) {
-        saveTimer = 0;
-        saveGame();
-      }
     }
-    const autoDt = (now - state.lastAuto) / 1000;
-    if (state.autoDamage > 0 && nearBear() && autoDt >= 0.4) {
-      const amount = Math.max(1, Math.floor(state.autoDamage * autoDt));
-      attack(amount, true);
-      state.lastAuto = now;
+    const atHuntSpot = distance(playerPoint(), points.bearAttack) < 3.2;
+    const atSellSpot = distance(playerPoint(), points.sellSpot) < 3.2;
+    if (state.mode === "hunt" && atHuntSpot && now >= state.nextHit) {
+      dealDamage(state.damage, "player");
+      state.nextHit = now + 520;
+    }
+    if (state.mode === "sell" && atSellSpot) {
+      sellMeat();
+    }
+    if (state.buddies > 0 && now >= state.nextBuddyHit) {
+      dealDamage(state.buddies * 3, "buddy");
+      state.nextBuddyHit = now + 1000;
+    }
+    if (saveTimer > 0.8) {
+      saveTimer = 0;
+      saveGame();
     }
     render();
     requestAnimationFrame(frame);
   }
 
-  document.addEventListener("keydown", (e) => {
-    const k = e.key.toLowerCase();
-    if (["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(k)) {
-      e.preventDefault();
-      keys[e.key.startsWith("Arrow") ? e.key : k] = true;
-    }
-    if (k === " " || k === "enter") attack(state.damage);
+  el.huntBtn.addEventListener("click", () => setTarget(points.bearAttack, "hunt"));
+  el.sellBtn.addEventListener("click", () => setTarget(points.sellSpot, "sell"));
+  el.bearWrap.addEventListener("click", () => setTarget(points.bearAttack, "hunt"));
+  el.vendor.addEventListener("click", () => setTarget(points.sellSpot, "sell"));
+  el.arena.addEventListener("click", (e) => {
+    if (e.target.closest("button") || e.target.closest("#bearWrap") || e.target.closest("#vendor")) return;
+    const rect = el.arena.getBoundingClientRect();
+    state.targetX = ((e.clientX - rect.left) / rect.width) * 100;
+    state.targetY = ((e.clientY - rect.top) / rect.height) * 100;
+    state.mode = "idle";
   });
-  document.addEventListener("keyup", (e) => {
-    const k = e.key.toLowerCase();
-    keys[e.key.startsWith("Arrow") ? e.key : k] = false;
-  });
-  document.querySelectorAll("[data-dir]").forEach((btn) => {
-    const dir = btn.dataset.dir;
-    btn.addEventListener("pointerdown", (e) => {
-      e.preventDefault();
-      btn.setPointerCapture(e.pointerId);
-      setDir(dir, true);
-    });
-    btn.addEventListener("pointerup", () => setDir(dir, false));
-    btn.addEventListener("pointercancel", () => setDir(dir, false));
-    btn.addEventListener("pointerleave", () => setDir(dir, false));
-  });
-  el.attackBtn.addEventListener("click", () => attack(state.damage));
-  el.bearWrap.addEventListener("click", () => attack(state.damage));
-  el.sellBtn.addEventListener("click", sell);
   el.weaponBtn.addEventListener("click", () => buy("weapon"));
   el.bagBtn.addEventListener("click", () => buy("bag"));
-  el.autoBtn.addEventListener("click", () => buy("auto"));
+  el.buddyBtn.addEventListener("click", () => buy("buddy"));
   el.resetBtn.addEventListener("click", reset);
 
-  addLog("v0.2公開。キャラを動かして遊べるようになりました。");
+  addLog("v0.3公開。自動移動と自動狩りで遊びやすくしました。");
+  if (!loadedSave) {
+    calcBear();
+  } else {
+    state.maxHp = Math.round(20 + state.level * 8 + state.kills * 2.2);
+    state.hp = clamp(state.hp, 1, state.maxHp);
+  }
   render();
   requestAnimationFrame(frame);
 })();
